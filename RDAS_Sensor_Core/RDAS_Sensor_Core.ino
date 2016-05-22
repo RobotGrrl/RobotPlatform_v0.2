@@ -109,7 +109,9 @@ void loop() {
   }
 
   if(current_time-last_fwd_msg >= 1000) {
-    digitalWrite(big_led, LOW);    
+    digitalWrite(big_led, LOW);
+    promulgate.transmit_action('#', 'L', 0, 0, '!');
+    promulgate.transmit_action('#', 'R', 0, 0, '!');
   } else {
     digitalWrite(big_led, (current_time%1000) < 100 || ((current_time%1000) > 200 && (current_time%1000) < 300));
   }
