@@ -83,6 +83,7 @@ int link_b_min = 200;//180;
 int link_b_level = 120;
 
 long last_tilt = 0;
+long last_mtr_cmd = 0;
 
 
 void motor_a(boolean dir, int speedy) {
@@ -197,6 +198,12 @@ void loop() {
     servo_b.detach();
   }
   */
+
+  // stop the motors if they do not receive a command in 100ms
+  if(current_time-last_mtr_cmd >= 100) {
+    motor_a(FWD, 0);
+    motor_b(FWD, 0);
+  }
   
 }
 
@@ -258,6 +265,7 @@ void received_action(char action, char cmd, uint8_t key, uint16_t val, char deli
   if(action == '#') {
 
     if(cmd == 'L') { // left motor
+      last_mtr_cmd = current_time;
       if(key == 1) { // fwd
         motor_a(FWD, val);
       } else if(key == 0) { // bwd
@@ -266,6 +274,7 @@ void received_action(char action, char cmd, uint8_t key, uint16_t val, char deli
     }
   
     if(cmd == 'R') { // right motor
+      last_mtr_cmd = current_time;
       if(key == 1) { // fwd
         motor_b(FWD, val);
       } else if(key == 0) { // bwd
@@ -276,6 +285,7 @@ void received_action(char action, char cmd, uint8_t key, uint16_t val, char deli
   } else if(action == '@') {
 
     if(cmd == 'L') { // left motor
+      last_mtr_cmd = current_time;
       if(key == 1) { // fwd
         motor_a(FWD, val);
       } else if(key == 0) { // bwd
@@ -284,6 +294,7 @@ void received_action(char action, char cmd, uint8_t key, uint16_t val, char deli
     }
   
     if(cmd == 'R') { // right motor
+      last_mtr_cmd = current_time;
       if(key == 1) { // fwd
         motor_b(FWD, val);
       } else if(key == 0) { // bwd
